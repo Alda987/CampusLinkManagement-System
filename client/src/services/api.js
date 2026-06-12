@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://campus-link-management-system-v260.vercel.app/api",
+  baseURL: "https://campuslink-backend-bgph.onrender.com/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 export default api;
