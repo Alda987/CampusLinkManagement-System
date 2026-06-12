@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -24,6 +26,10 @@ app.use(
 );
 
 app.use(express.json());
+
+// Check Environment Variables
+console.log("MONGO_URI exists:", !!process.env.MONGO_URI);
+console.log("MONGO_URI value:", process.env.MONGO_URI);
 
 // MongoDB Connection
 mongoose
@@ -56,9 +62,10 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "OK",
-    database: mongoose.connection.readyState === 1
-      ? "Connected"
-      : "Disconnected",
+    database:
+      mongoose.connection.readyState === 1
+        ? "Connected"
+        : "Disconnected",
   });
 });
 
@@ -84,7 +91,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Server
+// Start Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
