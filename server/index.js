@@ -17,7 +17,7 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://campus-link-management-system.vercel.app",
+      "https://campus-link-management-system-v260.vercel.app",
     ],
     credentials: true,
   })
@@ -56,18 +56,20 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "OK",
-    database: "Connected",
+    database: mongoose.connection.readyState === 1
+      ? "Connected"
+      : "Disconnected",
   });
 });
 
 // Test Route
 app.post("/test", (req, res) => {
   console.log("TEST ROUTE HIT");
-  console.log(req.body);
 
   res.json({
     success: true,
     message: "Test route working",
+    data: req.body,
   });
 });
 
@@ -78,6 +80,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({
     success: false,
     message: "Something went wrong",
+    error: err.message,
   });
 });
 
