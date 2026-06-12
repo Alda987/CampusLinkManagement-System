@@ -15,11 +15,12 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
 
-// Middleware
+// CORS
 app.use(
   cors({
     origin: [
-      "https://campus-link-management-system-v260.vercel.app",
+      "https://campus-link-management-system-v26o.vercel.app",
+      "http://localhost:5173"
     ],
     credentials: true,
   })
@@ -27,21 +28,13 @@ app.use(
 
 app.use(express.json());
 
-// Check Environment Variables
-console.log("MONGO_URI exists:", !!process.env.MONGO_URI);
-console.log("MONGO_URI value:", process.env.MONGO_URI);
-
-// MongoDB Connection
+// MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("✅ MongoDB Connected");
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err);
-  });
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
-// API Routes
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/posts", postRoutes);
@@ -58,7 +51,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// Health Check Route
+// Health Route
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "OK",
@@ -69,18 +62,7 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Test Route
-app.post("/test", (req, res) => {
-  console.log("TEST ROUTE HIT");
-
-  res.json({
-    success: true,
-    message: "Test route working",
-    data: req.body,
-  });
-});
-
-// Global Error Handler
+// Error Handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
 
@@ -91,7 +73,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
