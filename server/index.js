@@ -20,6 +20,7 @@ app.use(
   cors({
     origin: [
       "https://campus-link-management-system-v26o.vercel.app",
+      "https://campus-link-management-sy-git-83d02b-alda-treesa-josys-projects.vercel.app",
       "http://localhost:5173"
     ],
     credentials: true,
